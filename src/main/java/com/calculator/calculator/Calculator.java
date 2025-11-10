@@ -12,36 +12,52 @@ import java.util.Scanner;
 import java.util.List;
 
 /**
- * Основной класс калькулятора
+ * Основной класс калькулятора математических выражений.
+ * Координирует работу парсера, вычислителя и реестра функций.
+ * Предоставляет высокоуровневый API для вычисления выражений.
+ * 
+ * @author Yarovaya Maria
+ * @version 1.0
  */
 public class Calculator {
     private final FunctionRegistry functionRegistry;
     
     /**
-     * Конструктор калькулятора
+     * Конструктор калькулятора. Инициализирует реестр математических функций.
+     * Создает экземпляр с предустановленным набором стандартных функций.
      */
     public Calculator() {
         this.functionRegistry = new FunctionRegistry();
     }
     
     /**
-     * Вычисляет значение выражения
-     * 
-     * @param expression математическое выражение
-     * @return результат вычисления
-     * @throws ExpressionException если выражение содержит ошибки
+     * Вычисляет значение математического выражения без переменных.
+     * Выражение может содержать числа, операторы, скобки и функции.
+     *
+     * @param expression математическое выражение для вычисления
+     * @return результат вычисления выражения как значение типа double
+     * @throws ExpressionException если выражение содержит синтаксические ошибки,
+     *                            неизвестные функции или деление на ноль
+     * @see #calculate(String, Map)
      */
     public double calculate(String expression) throws ExpressionException {
         return calculate(expression, null);
     }
     
     /**
-     * Вычисляет значение выражения с переменными
-     * 
-     * @param expression математическое выражение
-     * @param variables значения переменных
-     * @return результат вычисления
-     * @throws ExpressionException если выражение содержит ошибки
+     * Вычисляет значение математического выражения с поддержкой переменных.
+     * Если выражение содержит переменные, их значения должны быть предоставлены в карте variables.
+     * Процесс вычисления включает парсинг выражения и его последующую оценку.
+     *
+     * @param expression математическое выражение для вычисления
+     * @param variables карта значений переменных, где ключ - имя переменной,
+     *                  значение - числовое значение переменной
+     * @return результат вычисления выражения как значение типа double
+     * @throws ExpressionException если выражение содержит синтаксические ошибки,
+     *                            неизвестные функции, деление на ноль или
+     *                            используются неопределенные переменные
+     * @see ExpressionParser
+     * @see ExpressionEvaluator
      */
     public double calculate(String expression, Map<String, Double> variables) 
             throws ExpressionException {
@@ -54,11 +70,13 @@ public class Calculator {
     }
     
     /**
-     * Извлекает имена переменных из выражения
-     * 
-     * @param expression математическое выражение
-     * @return множество имен переменных
-     * @throws ExpressionException если выражение содержит ошибки
+     * Анализирует выражение и извлекает все имена переменных.
+     * Полезно для определения, какие значения переменных нужно запросить у пользователя.
+     *
+     * @param expression математическое выражение для анализа
+     * @return множество уникальных имен переменных, найденных в выражении
+     * @throws ExpressionException если выражение содержит синтаксические ошибки
+     * @see #getVariableValues(Set, Scanner)
      */
     public Set<String> extractVariables(String expression) throws ExpressionException {
         ExpressionParser parser = new ExpressionParser(expression, functionRegistry);
@@ -75,11 +93,14 @@ public class Calculator {
     }
     
     /**
-     * Получает значения переменных от пользователя
-     * 
-     * @param variables множество имен переменных
-     * @param scanner сканер для ввода
-     * @return карта значений переменных
+     * Запрашивает у пользователя значения для указанных переменных.
+     * Обеспечивает корректный ввод числовых значений с обработкой ошибок.
+     * Цикл продолжается до тех пор, пока для каждой переменной не будет введено корректное число.
+     *
+     * @param variables множество имен переменных, для которых нужно запросить значения
+     * @param scanner объект Scanner для чтения ввода пользователя
+     * @return карта, содержащая значения переменных, где ключ - имя переменной,
+     *         значение - введенное пользователем число
      */
     public Map<String, Double> getVariableValues(Set<String> variables, Scanner scanner) {
         Map<String, Double> values = new HashMap<>();
@@ -102,10 +123,13 @@ public class Calculator {
     }
     
     /**
-     * Регистрирует пользовательскую функцию
-     * 
-     * @param name имя функции
-     * @param function реализация функции
+     * Регистрирует пользовательскую математическую функцию в калькуляторе.
+     * Зарегистрированная функция становится доступной для использования в выражениях.
+     * Имя функции регистрируется в нижнем регистре для регистронезависимого доступа.
+     *
+     * @param name имя функции для использования в выражениях
+     * @param function реализация функции в виде лямбда-выражения или объекта MathFunction
+     * @see FunctionRegistry#registerFunction(String, MathFunction)
      */
     public void registerFunction(String name, MathFunction function) {
         functionRegistry.registerFunction(name, function);

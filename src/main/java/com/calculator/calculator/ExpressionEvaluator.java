@@ -9,7 +9,12 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
- * Вычислитель математических выражений
+ * Вычислитель математических выражений.
+ * Обрабатывает список токенов, полученных от парсера, и вычисляет значение выражения.
+ * Реализует рекурсивный спуск для разбора выражений с учетом приоритета операций.
+ * 
+ * @author Yarovaya Maria
+ * @version 1.0
  */
 public class ExpressionEvaluator {
     private final List<Token> tokens;
@@ -18,11 +23,12 @@ public class ExpressionEvaluator {
     private int currentTokenIndex;
     
     /**
-     * Конструктор вычислителя
-     * 
-     * @param tokens список токенов
-     * @param functionRegistry реестр функций
-     * @param variables значения переменных
+     * Конструктор вычислителя выражений.
+     * Инициализирует вычислитель с предварительно разобранными токенами.
+     *
+     * @param tokens список токенов, полученный от ExpressionParser
+     * @param functionRegistry реестр математических функций для выполнения вызовов функций
+     * @param variables карта значений переменных, используемых в выражении
      */
     public ExpressionEvaluator(List<Token> tokens, FunctionRegistry functionRegistry, 
                               Map<String, Double> variables) {
@@ -33,10 +39,13 @@ public class ExpressionEvaluator {
     }
     
     /**
-     * Вычисляет значение выражения
-     * 
-     * @return результат вычисления
-     * @throws ExpressionException если выражение содержит ошибки
+     * Вычисляет значение математического выражения на основе списка токенов.
+     * Выполняет синтаксический анализ и вычисление выражения с проверкой корректности.
+     *
+     * @return результат вычисления выражения как значение типа double
+     * @throws ExpressionException если выражение содержит синтаксические ошибки,
+     *                            неизвестные переменные, деление на ноль или
+     *                            некорректные вызовы функций
      */
     public double evaluate() throws ExpressionException {
         double result = parseExpression();
@@ -46,6 +55,12 @@ public class ExpressionEvaluator {
         return result;
     }
     
+    /**
+     * Обрабатывает выражения уровня сложения и вычитания.
+     * Разбирает последовательности терминов, соединенных операторами '+' и '-'.
+     *
+     * @return результат вычисления выражения на уровне сложения/вычитания
+     */
     private double parseExpression() {
         double result = parseTerm();
         
@@ -70,6 +85,13 @@ public class ExpressionEvaluator {
         return result;
     }
     
+    /**
+     * Обрабатывает выражения уровня умножения и деления.
+     * Разбирает последовательности факторов, соединенных операторами '*' и '/'.
+     *
+     * @return результат вычисления выражения на уровне умножения/деления
+     * @throws ExpressionException при обнаружении деления на ноль
+     */
     private double parseTerm() {
         double result = parseFactor();
         
@@ -97,6 +119,12 @@ public class ExpressionEvaluator {
         return result;
     }
     
+    /**
+     * Обрабатывает выражения уровня возведения в степень.
+     * Разбирает последовательности степеней, соединенных оператором '^'.
+     *
+     * @return результат вычисления выражения на уровне степеней
+     */
     private double parseFactor() {
         double result = parsePower();
         
@@ -111,10 +139,24 @@ public class ExpressionEvaluator {
         return result;
     }
     
+    /**
+     * Обрабатывает базовые выражения (первичные выражения).
+     * Рекурсивно вызывает parsePrimary для обработки выражений в скобках.
+     *
+     * @return результат вычисления первичного выражения
+     */
     private double parsePower() {
         return parsePrimary();
     }
     
+    /**
+     * Обрабатывает первичные элементы выражения: числа, переменные, функции, скобки.
+     * Является точкой входа для разбора самых базовых элементов выражения.
+     *
+     * @return результат вычисления первичного элемента
+     * @throws ExpressionException при обнаружении неизвестных переменных,
+     *                            некорректных чисел или неожиданных токенов
+     */
     private double parsePrimary() {
         Token token = currentToken();
         
@@ -158,6 +200,14 @@ public class ExpressionEvaluator {
         }
     }
     
+    /**
+     * Обрабатывает вызовы математических функций.
+     * Разбирает имя функции, аргументы в скобках и выполняет функцию через реестр.
+     *
+     * @return результат выполнения математической функции
+     * @throws ExpressionException при некорректном синтаксисе вызова функции
+     *                            или ошибках выполнения функции
+     */
     private double parseFunction() {
         Token functionToken = currentToken();
         String functionName = functionToken.getValue();
@@ -194,6 +244,11 @@ public class ExpressionEvaluator {
         }
     }
     
+    /**
+     * Возвращает текущий токен без продвижения по списку токенов.
+     *
+     * @return текущий токен или EOF-токен если достигнут конец списка
+     */
     private Token currentToken() {
         if (currentTokenIndex >= tokens.size()) {
             return new Token(TokenType.EOF, "", -1);
@@ -201,6 +256,10 @@ public class ExpressionEvaluator {
         return tokens.get(currentTokenIndex);
     }
     
+    /**
+     * Перемещает указатель на следующий токен в списке.
+     * Используется для потребления обработанных токенов.
+     */
     private void consumeToken() {
         if (currentTokenIndex < tokens.size()) {
             currentTokenIndex++;

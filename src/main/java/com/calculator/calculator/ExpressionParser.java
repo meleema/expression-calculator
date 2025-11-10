@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Парсер математических выражений
+ * Лексический анализатор математических выражений.
+ * Преобразует строковое математическое выражение в последовательность токенов.
+ * Поддерживает числа, операторы, скобки, функции и переменные.
+ * 
+ * @author Yarovaya Maria
+ * @version 1.0
  */
 public class ExpressionParser {
     private final String expression;
@@ -16,10 +21,11 @@ public class ExpressionParser {
     private char currentChar;
     
     /**
-     * Конструктор парсера
-     * 
-     * @param expression математическое выражение
-     * @param functionRegistry реестр функций
+     * Конструктор парсера выражений.
+     * Инициализирует парсер с очищенным от пробелов выражением.
+     *
+     * @param expression математическое выражение для разбора
+     * @param functionRegistry реестр функций для идентификации имен функций
      */
     public ExpressionParser(String expression, FunctionRegistry functionRegistry) {
         this.expression = expression.replaceAll("\\s+", ""); // Удаляем пробелы
@@ -29,10 +35,12 @@ public class ExpressionParser {
     }
     
     /**
-     * Разбирает выражение на токены
-     * 
-     * @return список токенов
-     * @throws ExpressionException если выражение содержит ошибки
+     * Разбирает математическое выражение на последовательность токенов.
+     * Токенизация включает распознавание чисел, операторов, скобок, функций и переменных.
+     *
+     * @return список токенов, представляющих структуру выражения
+     * @throws ExpressionException если выражение содержит неизвестные символы
+     *                            или некорректный формат чисел
      */
     public List<Token> parse() throws ExpressionException {
         List<Token> tokens = new ArrayList<>();
@@ -75,6 +83,14 @@ public class ExpressionParser {
         return tokens;
     }
     
+    /**
+     * Разбирает числовой литерал из входной строки.
+     * Поддерживает целые числа и числа с плавающей точкой.
+     * Проверяет корректность формата числа (не более одной десятичной точки).
+     *
+     * @return токен типа NUMBER с числовым значением
+     * @throws ExpressionException если обнаружено более одной десятичной точки
+     */
     private Token parseNumber() {
         int startPos = position;
         StringBuilder sb = new StringBuilder();
@@ -95,6 +111,13 @@ public class ExpressionParser {
         return new Token(TokenType.NUMBER, sb.toString(), startPos);
     }
     
+    /**
+     * Разбирает идентификатор (имя функции или переменной) из входной строки.
+     * Идентификаторы могут содержать буквы и цифры, но должны начинаться с буквы.
+     * Проверяет реестр функций для определения типа идентификатора.
+     *
+     * @return токен типа FUNCTION или VARIABLE в зависимости от наличия в реестре функций
+     */
     private Token parseIdentifier() {
         int startPos = position;
         StringBuilder sb = new StringBuilder();
@@ -115,6 +138,11 @@ public class ExpressionParser {
         }
     }
     
+    /**
+     * Перемещает указатель на следующий символ во входной строке.
+     * Обновляет currentChar текущим символом или '\0' при достижении конца строки.
+     * Используется для последовательного чтения символов выражения.
+     */
     private void advance() {
         position++;
         if (position < expression.length()) {
