@@ -1,0 +1,50 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+--no-fonts
+-encoding
+'UTF-8'
+-protected
+-source
+'11'
+-sourcepath
+'C:/Users/User/Desktop/Java/expression-calculator/src/main/java;C:/Users/User/Desktop/Java/expression-calculator/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/User/Desktop/Java/expression-calculator/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'expression-calculator 1.0.0 API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' 'C:/Users/User/Desktop/Java/expression-calculator/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'expression-calculator 1.0.0 API'
+com.calculator.calculator
+com.calculator.calculator.functions
+com.calculator.exception
+com.calculator
+C:\Users\User\Desktop\Java\expression-calculator\src\main\java = 1762793339574
+C:\Users\User\Desktop\Java\expression-calculator\target\generated-sources\annotations = 1762803874138
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\allclasses-index.html = 1762803878539
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\allpackages-index.html = 1762803878543
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\element-list = 1762803878384
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\help-doc.html = 1762803878580
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\index-all.html = 1762803878565
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\index.html = 1762803878523
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\member-search-index.js = 1762803878550
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\module-search-index.js = 1762803878545
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\overview-summary.html = 1762803878573
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\overview-tree.html = 1762803878519
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\package-search-index.js = 1762803878546
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\search.html = 1762803878568
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\serialized-form.html = 1762803878434
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\tag-search-index.js = 1762803878553
+C:\Users\User\Desktop\Java\expression-calculator\target\reports\apidocs\type-search-index.js = 1762803878547
