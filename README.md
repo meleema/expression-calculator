@@ -19,6 +19,67 @@
 - Интерактивный запрос значений переменных
 - Регистронезависимые имена функций
 
+# Архитектура 
+```
+expression-calculator/
+├── src/
+│   ├── main/java/com/calculator/
+│   │   ├── calculator/
+│   │   │   ├── Calculator.java
+│   │   │   ├── ExpressionParser.java
+│   │   │   ├── ExpressionEvaluator.java
+│   │   │   ├── Token.java
+│   │   │   ├── TokenType.java
+│   │   │   └── functions/
+│   │   │       ├── MathFunction.java
+│   │   │       └── FunctionRegistry.java
+│   │   ├── exception/
+│   │   │   └── ExpressionException.java
+│   │   └── Main.java
+│   └── test/java/com/calculator/
+│       ├── calculator/
+│       │   ├── ExpressionParserTest.java
+│       │   └── ExpressionEvaluatorTest.java
+│       └── IntegrationTest.java
+├── target/
+├── pom.xml
+└── README.md 
+```
+
+# Принципы работы
+1. Парсинг: `ExpressionParser` преобразует строку в последовательность токенов
+2. Вычисление: `ExpressionEvaluator` обрабатывает токены с учетом приоритета операций
+3. Функции: `FunctionRegistry` управляет математическими функциями
+4. Ошибки: `ExpressionException` предоставляет детальную информацию об ошибках
+
+# Использование. Примеры выражений
+
+- Базовые операции
+
+2 + 3 * 4           → 14.0
+(2 + 3) * 4         → 20.0
+10 / 2              → 5.0
+2 ^ 3               → 8.0
+
+- Функции
+
+sin(0) + cos(0)     → 1.0
+sqrt(16) + abs(-5)  → 9.0
+log10(100)          → 2.0
+max(5, 10)          → 10.0
+
+- Переменные
+
+x + y               → запросит значения x и y
+a * b + c           → запросит значения a, b, c
+
+# Обработка ошибок
+
+2 + * 3             → Ошибка: Неожиданный токен (позиция: 3)
+1 / 0               → Ошибка: Деление на ноль (позиция: 2)
+sqrt(-1)            → Ошибка: Корень из отрицательного числа (позиция: 0)
+unknown * 2         → Ошибка: Неизвестная переменная (позиция: 0)
+
 # Технологии
 
 - Java 11+
@@ -41,11 +102,6 @@ mvn exec:java
 mvn package
 java -jar target/expression-calculator-1.0.0.jar
 
-# Принципы работы
-1. Парсинг: `ExpressionParser` преобразует строку в последовательность токенов
-2. Вычисление: `ExpressionEvaluator` обрабатывает токены с учетом приоритета операций
-3. Функции: `FunctionRegistry` управляет математическими функциями
-4. Ошибки: `ExpressionException` предоставляет детальную информацию об ошибках
-
 # Генерация JavaDoc
 mvn javadoc:javadoc
+
