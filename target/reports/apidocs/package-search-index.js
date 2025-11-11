@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.calculator"},{"l":"com.calculator.calculator"},{"l":"com.calculator.calculator.functions"},{"l":"com.calculator.exception"}];updateSearchResults();
